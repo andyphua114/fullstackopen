@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import noteService from './services/persons'
+import Notification from './components/Notification'
 
 const Persons = (props) => {
 
@@ -49,12 +50,10 @@ const PersonForm = (props) => {
 
 const App = () => {
   const [persons, setPersons] = useState([])
-
   const [newName, setNewName] = useState('')
-
   const [newNumber, setNewNumber] = useState('')
-
   const [search, setSearch] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     noteService.
@@ -86,7 +85,14 @@ const App = () => {
           .updatePerson(selectedId, updatedNameObject)
           .then(returnedPerson => {
             setPersons(persons.map(person => person.name !== newName ? person : returnedPerson))
+            setMessage(`${updatedNameObject.name} number changed`)
+            setTimeout(() => { setMessage(null) }, 3000)
           })
+          .catch(error => {
+            setMessage(`Information of ${updatedNameObject.name} has already been removed from server`)
+            setTimeout(() => { setMessage(null) }, 3000)
+          }
+          )
         setNewName('')
         setNewNumber('')
       }
@@ -102,6 +108,8 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          setMessage(`Added ${nameObject.name}`)
+          setTimeout(() => { setMessage(null) }, 3000)
         }
         )
     }
@@ -109,13 +117,14 @@ const App = () => {
 
   const deleteToggle = (id) => {
     const person = persons.filter(person => person.id === id)[0]
-    console.log(person)
 
     if (window.confirm(`Delete ${person.name} ?`)) {
       noteService
         .deletePerson(id)
         .then(returnedPerson => {
           setPersons(persons.filter(person => person.id !== id))
+          setMessage(`Deleted ${person.name}`)
+          setTimeout(() => { setMessage(null) }, 3000)
         })
     }
   }
@@ -136,6 +145,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter handleSearch={handleSearch} />
       <h3>add a new</h3>
       <PersonForm addPerson={addPerson} newName={newName} handleNameAdd={handleNameAdd} newNumber={newNumber} handleNumberAdd={handleNumberAdd} />
