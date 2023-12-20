@@ -38,9 +38,11 @@ const Weather = (props) => {
 
   const filteredCountries = props.filteredCountries
 
-  countryService
-    .getWeather(filteredCountries[0].latlng[0], filteredCountries[0].latlng[1])
-    .then(weather => setWeather(weather))
+  useEffect(() => {
+    countryService
+      .getWeather(filteredCountries[0].latlng[0], filteredCountries[0].latlng[1])
+      .then(weather => setWeather(weather))
+  }, [])
 
   if (weather) {
     return (
