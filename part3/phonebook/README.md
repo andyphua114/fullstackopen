@@ -1,5 +1,7 @@
 # React + Vite
 
+The backend repository can be found [here](https://github.com/andyphua114/fullstackopen-part3-backend).
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
