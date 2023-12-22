@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import noteService from './services/persons'
+import personService from './services/persons'
 import Notification from './components/Notification'
 
 const Persons = (props) => {
@@ -56,7 +56,7 @@ const App = () => {
   const [message, setMessage] = useState(null)
 
   useEffect(() => {
-    noteService.
+    personService.
       getAll()
       .then(initialPersons => {
         setPersons(initialPersons)
@@ -81,7 +81,7 @@ const App = () => {
         const selectedPerson = persons.find(person => person.name === newName)
         const selectedId = selectedPerson.id
         const updatedNameObject = { ...selectedPerson, number: newNumber }
-        noteService
+        personService
           .updatePerson(selectedId, updatedNameObject)
           .then(returnedPerson => {
             setPersons(persons.map(person => person.name !== newName ? person : returnedPerson))
@@ -102,7 +102,7 @@ const App = () => {
       }
     }
     else {
-      noteService
+      personService
         .create(nameObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
@@ -119,7 +119,7 @@ const App = () => {
     const person = persons.filter(person => person.id === id)[0]
 
     if (window.confirm(`Delete ${person.name} ?`)) {
-      noteService
+      personService
         .deletePerson(id)
         .then(returnedPerson => {
           setPersons(persons.filter(person => person.id !== id))
