@@ -89,7 +89,8 @@ const App = () => {
             setTimeout(() => { setMessage(null) }, 3000)
           })
           .catch(error => {
-            setMessage(`Information of ${updatedNameObject.name} has already been removed from server`)
+            //setMessage(`Information of ${updatedNameObject.name} has already been removed from server`)
+            setMessage(`${error.response.data.error}`)
             setTimeout(() => { setMessage(null) }, 3000)
           }
           )
@@ -112,6 +113,11 @@ const App = () => {
           setTimeout(() => { setMessage(null) }, 3000)
         }
         )
+        .catch(error => {
+          console.log(error.response.data.error)
+          setMessage(`${error.response.data.error}`)
+          setTimeout(() => { setMessage(null) }, 3000);
+        })
     }
   }
 

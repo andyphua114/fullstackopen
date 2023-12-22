@@ -14,7 +14,7 @@ const Notification = ({ message }) => {
     else if (message.includes("changed")) {
         clsName = "change"
     }
-    else if (message.includes("removed")) {
+    else if (message.includes("removed") || message.toLowerCase().includes("validation") || message.includes("missing")) {
         clsName = "error"
     }
 
