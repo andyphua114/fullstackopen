@@ -95,6 +95,40 @@ describe('missing', () => {
   });
 });
 
+//Ex 4.13
+test('delete blog by id', async () => {
+  const blogsAtStart = await helper.blogsInDB();
+
+  const deleteFirstBlog = blogsAtStart[0].id;
+
+  await api.delete(`/api/blogs/${deleteFirstBlog}`).expect(204);
+
+  const blogsAtEnd = await api.get('/api/blogs');
+
+  expect(blogsAtEnd.body).toHaveLength(blogsAtStart.length - 1);
+});
+
+//Ex 4.14
+test('update blog likes by id', async () => {
+  const blogsAtStart = await helper.blogsInDB();
+
+  const firstBlogId = blogsAtStart[0].id;
+  const firstBlogLikes = blogsAtStart[0].likes;
+
+  const updateBlog = {
+    id: firstBlogId,
+    title: blogsAtStart[0].title,
+    author: blogsAtStart[0].author,
+    url: blogsAtStart[0].url,
+    likes: firstBlogLikes + 1
+  };
+
+  await api.put(`/api/blogs/${firstBlogId}`).send(updateBlog);
+
+  const blogsAtEnd = await api.get('/api/blogs');
+  expect(blogsAtEnd.body[0].likes).toEqual(firstBlogLikes + 1);
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
