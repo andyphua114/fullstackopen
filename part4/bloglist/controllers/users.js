@@ -11,16 +11,21 @@ usersRouter.post('/', async (request, response) => {
   const { username, name, password } = request.body;
 
   const saltRounds = 10;
-  const passwordHash = await bcrypt.hash(password, saltRounds);
 
-  const user = new User({
-    username,
-    name,
-    passwordHash
-  });
+  if (!password || password.length < 3 || username.length < 3) {
+    response.status(401).json({ error: 'invalid username or password' });
+  } else {
+    const passwordHash = await bcrypt.hash(password, saltRounds);
 
-  const savedUser = await user.save();
-  response.status(201).json(savedUser);
+    const user = new User({
+      username,
+      name,
+      passwordHash
+    });
+
+    const savedUser = await user.save();
+    response.status(201).json(savedUser);
+  }
 });
 
 module.exports = usersRouter;

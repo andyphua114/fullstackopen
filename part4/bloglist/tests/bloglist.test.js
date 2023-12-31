@@ -6,6 +6,7 @@ const app = require('../app');
 
 const api = supertest(app);
 const Blog = require('../models/blog');
+const User = require('../models/user');
 
 beforeEach(async () => {
   await Blog.deleteMany({});
@@ -127,6 +128,17 @@ test('update blog likes by id', async () => {
 
   const blogsAtEnd = await api.get('/api/blogs');
   expect(blogsAtEnd.body[0].likes).toEqual(firstBlogLikes + 1);
+});
+
+//Ex 4.16
+test('invalid user', async () => {
+  const newUser = {
+    username: 'ap',
+    name: 'Andy Phua',
+    password: 'auhpa'
+  };
+
+  await api.post('/api/users').send(newUser).expect(401);
 });
 
 afterAll(async () => {
