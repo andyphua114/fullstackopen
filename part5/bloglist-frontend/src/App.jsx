@@ -15,7 +15,13 @@ const App = () => {
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    const fetchData = async () => {
+      const blogs = await blogService.getAll();
+      blogs.sort((a, b) => b.likes - a.likes);
+      setBlogs(blogs);
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -59,7 +65,9 @@ const App = () => {
   const addBlog = async (newBlog) => {
     createFormRef.current.toggleVisibility();
     const returnedBlog = await blogService.create(newBlog);
-    setBlogs(blogs.concat(returnedBlog));
+    const newBlogList = blogs.concat(returnedBlog);
+    newBlogList.sort((a, b) => b.likes - a.likes);
+    setBlogs(blogs.concat(newBlogList));
     setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`);
     setTimeout(() => {
       setMessage('');

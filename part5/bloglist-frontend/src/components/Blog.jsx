@@ -29,7 +29,9 @@ const Blog = ({ blog, blogs, setBlogs }) => {
       url: blog.url
     };
     const returnedBlog = await blogService.update(blog.id, updatedObject);
-    setBlogs(blogs.map((blog) => (blog.id !== updateId ? blog : returnedBlog)));
+    const newBlogList = blogs.map((blog) => (blog.id !== updateId ? blog : returnedBlog));
+    newBlogList.sort((a, b) => b.likes - a.likes);
+    setBlogs(newBlogList);
   };
 
   if (!visible) {
