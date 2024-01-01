@@ -28,6 +28,7 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response, next) 
   });
 
   const savedBlog = await blog.save();
+  await savedBlog.populate('user', { username: 1, name: 1 });
 
   // update the user notes array with the new created note id
   user.blogs = user.blogs.concat(savedBlog._id);
