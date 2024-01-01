@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
 import Create from './components/Create';
+import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -58,6 +59,22 @@ const App = () => {
     setUser(null);
   };
 
+  const createFormRef = useRef();
+
+  const createForm = () => (
+    <Togglable buttonLabel="new note" ref={createFormRef}>
+      <Create
+        title={title}
+        setTitle={setTitle}
+        author={author}
+        setAuthor={setAuthor}
+        url={url}
+        setUrl={setUrl}
+        handleCreate={handleCreate}
+      />
+    </Togglable>
+  );
+
   const handleCreate = async (event) => {
     event.preventDefault();
 
@@ -67,9 +84,13 @@ const App = () => {
       url
     };
 
+    createFormRef.current.toggleVisibility();
     const returnedBlog = await blogService.create(newBlog);
     setBlogs(blogs.concat(returnedBlog));
     setMessage(`a new blog ${title} by ${author} added`);
+    setTimeout(() => {
+      setMessage('');
+    }, 5000);
     setTitle('');
     setAuthor('');
     setUrl('');
@@ -98,17 +119,7 @@ const App = () => {
           </p>
         </div>
       )}
-      {user && (
-        <Create
-          title={title}
-          setTitle={setTitle}
-          author={author}
-          setAuthor={setAuthor}
-          url={url}
-          setUrl={setUrl}
-          handleCreate={handleCreate}
-        />
-      )}
+      {user && createForm()}
       {user && blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
     </div>
   );
