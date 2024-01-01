@@ -11,7 +11,7 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [message, setMessage] = useState(null);
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -45,9 +45,9 @@ const App = () => {
       setUsername('');
       setPassword('');
     } catch (error) {
-      setErrorMessage('incorrect username or password');
+      setMessage('wrong username or password');
       setTimeout(() => {
-        setErrorMessage(null);
+        setMessage(null);
       }, 5000);
     }
   };
@@ -69,6 +69,7 @@ const App = () => {
 
     const returnedBlog = await blogService.create(newBlog);
     setBlogs(blogs.concat(returnedBlog));
+    setMessage(`a new blog ${title} by ${author} added`);
     setTitle('');
     setAuthor('');
     setUrl('');
@@ -77,7 +78,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={errorMessage} />
+      <Notification message={message} />
       {!user && (
         <LoginForm
           handleLogin={handleLogin}
