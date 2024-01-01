@@ -23,10 +23,6 @@ const Blog = ({ blog }) => {
       </div>
     );
   } else if (visible) {
-    let userName = null;
-    if (Object.keys(blog).includes('user')) {
-      userName = blog.user.name;
-    }
     return (
       <div style={blogStyle}>
         <div>
@@ -37,7 +33,7 @@ const Blog = ({ blog }) => {
         <div>
           likes {blog.likes} <button>like</button>
         </div>
-        <div>{userName}</div>
+        <div>{blog.user.name}</div>
       </div>
     );
   }
