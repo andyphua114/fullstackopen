@@ -7,7 +7,9 @@ const LoginForm = (props) => {
           type="text"
           value={props.username}
           name="username"
-          onChange={props.handleUsername}
+          onChange={({ target }) => {
+            props.setUsername(target.value);
+          }}
         />
       </div>
       <div>
@@ -16,7 +18,9 @@ const LoginForm = (props) => {
           type="password"
           value={props.password}
           name="password"
-          onChange={props.handlePassword}
+          onChange={({ target }) => {
+            props.setPassword(target.value);
+          }}
         />
       </div>
       <button type="submit">login</button>
