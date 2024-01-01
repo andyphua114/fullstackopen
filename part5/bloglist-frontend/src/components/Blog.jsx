@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import IncreaseLike from './IncreaseLike';
+import blogService from '../services/blogs';
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, blogs, setBlogs }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -15,6 +17,21 @@ const Blog = ({ blog }) => {
     setVisible(!visible);
   };
 
+  const increaseLike = async (event) => {
+    event.preventDefault();
+    const updateId = blog.id;
+    const likes = blog.likes + 1;
+    const updatedObject = {
+      user: blog.user.id,
+      likes: likes,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url
+    };
+    const returnedBlog = await blogService.update(blog.id, updatedObject);
+    setBlogs(blogs.map((blog) => (blog.id !== updateId ? blog : returnedBlog)));
+  };
+
   if (!visible) {
     return (
       <div style={blogStyle}>
@@ -23,6 +40,10 @@ const Blog = ({ blog }) => {
       </div>
     );
   } else if (visible) {
+    let userName = null;
+    if (Object.keys(blog).includes('user')) {
+      userName = blog.user.name;
+    }
     return (
       <div style={blogStyle}>
         <div>
@@ -30,10 +51,8 @@ const Blog = ({ blog }) => {
           <button onClick={changeVisbility}>hide</button>
         </div>
         <div>{blog.url}</div>
-        <div>
-          likes {blog.likes} <button>like</button>
-        </div>
-        <div>{blog.user.name}</div>
+        <IncreaseLike likes={blog.likes} increaseLike={increaseLike} />
+        <div>{userName}</div>
       </div>
     );
   }

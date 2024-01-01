@@ -98,7 +98,8 @@ const App = () => {
         </div>
       )}
       {user && createForm()}
-      {user && blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
+      {user &&
+        blogs.map((blog) => <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} />)}
     </div>
   );
 };
