@@ -67,7 +67,7 @@ const App = () => {
     const returnedBlog = await blogService.create(newBlog);
     const newBlogList = blogs.concat(returnedBlog);
     newBlogList.sort((a, b) => b.likes - a.likes);
-    setBlogs(blogs.concat(newBlogList));
+    setBlogs(newBlogList);
     setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`);
     setTimeout(() => {
       setMessage('');
@@ -107,7 +107,9 @@ const App = () => {
       )}
       {user && createForm()}
       {user &&
-        blogs.map((blog) => <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} />)}
+        blogs.map((blog) => (
+          <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} user={user} />
+        ))}
     </div>
   );
 };

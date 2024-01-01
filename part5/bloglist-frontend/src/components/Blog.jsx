@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import IncreaseLike from './IncreaseLike';
 import blogService from '../services/blogs';
+import DeleteBlog from './Delete';
 
-const Blog = ({ blog, blogs, setBlogs }) => {
+const Blog = ({ blog, blogs, setBlogs, user }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -34,7 +35,18 @@ const Blog = ({ blog, blogs, setBlogs }) => {
     setBlogs(newBlogList);
   };
 
-  if (!visible) {
+  const handleRemove = async (event) => {
+    event.preventDefault();
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      const updateId = blog.id;
+      const returnedBlog = await blogService.deleteBlog(blog.id);
+      const newBlogList = blogs.map((blog) => (blog.id !== updateId ? blog : returnedBlog));
+      newBlogList.sort((a, b) => b.likes - a.likes);
+      setBlogs(newBlogList);
+    }
+  };
+
+  if (!visible && blog) {
     return (
       <div style={blogStyle}>
         {blog.title} {blog.author}
@@ -55,6 +67,7 @@ const Blog = ({ blog, blogs, setBlogs }) => {
         <div>{blog.url}</div>
         <IncreaseLike likes={blog.likes} increaseLike={increaseLike} />
         <div>{userName}</div>
+        <DeleteBlog user={user} blog={blog} handleRemove={handleRemove} />
       </div>
     );
   }
