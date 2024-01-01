@@ -13,9 +13,6 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -59,42 +56,23 @@ const App = () => {
     setUser(null);
   };
 
+  const addBlog = async (newBlog) => {
+    createFormRef.current.toggleVisibility();
+    const returnedBlog = await blogService.create(newBlog);
+    setBlogs(blogs.concat(returnedBlog));
+    setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`);
+    setTimeout(() => {
+      setMessage('');
+    }, 5000);
+  };
+
   const createFormRef = useRef();
 
   const createForm = () => (
     <Togglable buttonLabel="new note" ref={createFormRef}>
-      <Create
-        title={title}
-        setTitle={setTitle}
-        author={author}
-        setAuthor={setAuthor}
-        url={url}
-        setUrl={setUrl}
-        handleCreate={handleCreate}
-      />
+      <Create createBlog={addBlog} />
     </Togglable>
   );
-
-  const handleCreate = async (event) => {
-    event.preventDefault();
-
-    const newBlog = {
-      title,
-      author,
-      url
-    };
-
-    createFormRef.current.toggleVisibility();
-    const returnedBlog = await blogService.create(newBlog);
-    setBlogs(blogs.concat(returnedBlog));
-    setMessage(`a new blog ${title} by ${author} added`);
-    setTimeout(() => {
-      setMessage('');
-    }, 5000);
-    setTitle('');
-    setAuthor('');
-    setUrl('');
-  };
 
   return (
     <div>
