@@ -66,8 +66,9 @@ const App = () => {
     createFormRef.current.toggleVisibility();
     const returnedBlog = await blogService.create(newBlog);
     const newBlogList = blogs.concat(returnedBlog);
-    newBlogList.sort((a, b) => b.likes - a.likes);
-    setBlogs(newBlogList);
+    const finalBlogList = [...newBlogList];
+    finalBlogList.sort((a, b) => b.likes - a.likes);
+    setBlogs(finalBlogList);
     setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`);
     setTimeout(() => {
       setMessage('');

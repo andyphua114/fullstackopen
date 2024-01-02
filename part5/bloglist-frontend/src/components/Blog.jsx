@@ -31,8 +31,9 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
     };
     const returnedBlog = await blogService.update(blog.id, updatedObject);
     const newBlogList = blogs.map((blog) => (blog.id !== updateId ? blog : returnedBlog));
-    newBlogList.sort((a, b) => b.likes - a.likes);
-    setBlogs(newBlogList);
+    const finalBlogList = [...newBlogList];
+    finalBlogList.sort((a, b) => b.likes - a.likes);
+    setBlogs(finalBlogList);
   };
 
   const handleRemove = async (event) => {
