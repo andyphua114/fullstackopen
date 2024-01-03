@@ -8,7 +8,7 @@ const LoginForm = (props) => {
           value={props.username}
           name="username"
           onChange={({ target }) => {
-            props.setUsername(target.value);
+            props.setUsername(target.value)
           }}
         />
       </div>
@@ -19,13 +19,13 @@ const LoginForm = (props) => {
           value={props.password}
           name="password"
           onChange={({ target }) => {
-            props.setPassword(target.value);
+            props.setPassword(target.value)
           }}
         />
       </div>
       <button type="submit">login</button>
     </form>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

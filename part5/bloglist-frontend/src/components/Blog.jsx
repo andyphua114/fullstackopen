@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import IncreaseLike from './IncreaseLike';
-import blogService from '../services/blogs';
-import DeleteBlog from './Delete';
+import { useState } from 'react'
+import IncreaseLike from './IncreaseLike'
+import blogService from '../services/blogs'
+import DeleteBlog from './Delete'
 
 const Blog = ({ blog, blogs, setBlogs, user }) => {
   const blogStyle = {
@@ -10,42 +10,42 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5
-  };
+  }
 
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
 
   const changeVisbility = () => {
-    setVisible(!visible);
-  };
+    setVisible(!visible)
+  }
 
   const increaseLike = async (event) => {
-    event.preventDefault();
-    const updateId = blog.id;
-    const likes = blog.likes + 1;
+    event.preventDefault()
+    const updateId = blog.id
+    const likes = blog.likes + 1
     const updatedObject = {
       user: blog.user.id,
       likes: likes,
       author: blog.author,
       title: blog.title,
       url: blog.url
-    };
-    const returnedBlog = await blogService.update(blog.id, updatedObject);
-    const newBlogList = blogs.map((blog) => (blog.id !== updateId ? blog : returnedBlog));
-    const finalBlogList = [...newBlogList];
-    finalBlogList.sort((a, b) => b.likes - a.likes);
-    setBlogs(finalBlogList);
-  };
+    }
+    const returnedBlog = await blogService.update(blog.id, updatedObject)
+    const newBlogList = blogs.map((blog) => (blog.id !== updateId ? blog : returnedBlog))
+    const finalBlogList = [...newBlogList]
+    finalBlogList.sort((a, b) => b.likes - a.likes)
+    setBlogs(finalBlogList)
+  }
 
   const handleRemove = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      const updateId = blog.id;
-      const returnedBlog = await blogService.deleteBlog(blog.id);
-      const newBlogList = blogs.map((blog) => (blog.id !== updateId ? blog : returnedBlog));
-      newBlogList.sort((a, b) => b.likes - a.likes);
-      setBlogs(newBlogList);
+      const updateId = blog.id
+      const returnedBlog = await blogService.deleteBlog(blog.id)
+      const newBlogList = blogs.map((blog) => (blog.id !== updateId ? blog : returnedBlog))
+      newBlogList.sort((a, b) => b.likes - a.likes)
+      setBlogs(newBlogList)
     }
-  };
+  }
 
   if (!visible && blog) {
     return (
@@ -53,11 +53,11 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
         {blog.title} {blog.author}
         <button onClick={changeVisbility}>view</button>
       </div>
-    );
+    )
   } else if (visible) {
-    let userName = null;
+    let userName = null
     if (Object.keys(blog).includes('user')) {
-      userName = blog.user.name;
+      userName = blog.user.name
     }
     return (
       <div style={blogStyle}>
@@ -70,8 +70,8 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
         <div>{userName}</div>
         <DeleteBlog user={user} blog={blog} handleRemove={handleRemove} />
       </div>
-    );
+    )
   }
-};
+}
 
-export default Blog;
+export default Blog

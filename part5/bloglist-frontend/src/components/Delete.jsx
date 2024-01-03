@@ -5,11 +5,11 @@ const DeleteBlog = (props) => {
         <div>
           <button onClick={props.handleRemove}>remove</button>
         </div>
-      );
+      )
     }
   } else {
-    return null;
+    return null
   }
-};
+}
 
-export default DeleteBlog;
+export default DeleteBlog

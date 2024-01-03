@@ -3,7 +3,7 @@ const IncreaseLike = (props) => {
     <div>
       likes {props.likes} <button onClick={props.increaseLike}>like</button>
     </div>
-  );
-};
+  )
+}
 
-export default IncreaseLike;
+export default IncreaseLike
