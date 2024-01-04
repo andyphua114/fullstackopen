@@ -49,7 +49,7 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
 
   if (!visible && blog) {
     return (
-      <div style={blogStyle}>
+      <div style={blogStyle} className="blog">
         {blog.title} {blog.author}
         <button onClick={changeVisbility}>view</button>
       </div>
@@ -60,7 +60,7 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
       userName = blog.user.name
     }
     return (
-      <div style={blogStyle}>
+      <div style={blogStyle} className="blog">
         <div>
           {blog.title} {blog.author}
           <button onClick={changeVisbility}>hide</button>
